@@ -7,6 +7,7 @@ import { prisma } from "./prisma";
 import { admin, multiSession } from "better-auth/plugins"
 import { resend } from "./email/resend";
 import { reactResetPasswordEmail } from "./email/rest-password";
+import { VerifyEmail } from "./email/VerifyEmail";
 
 
 
@@ -51,6 +52,17 @@ export const auth = betterAuth({
         enabled: true,
         requireEmailVerification: true,
         minPasswordLength: 8,
+        async sendVerificationEmail({ user, url }) {
+        await resend.emails.send({
+            from: "no-reply@thenonstop.org",
+            to: user.email,
+            subject: "Verify your TheNonStop email address",
+            react: VerifyEmail({
+            username: user.email,
+            verifyLink: url,
+            }),
+        });
+        },
         async sendResetPassword({ user, url }) {
         await resend.emails.send({
             from: "no-reply@thenonstop.org",
