@@ -18,7 +18,7 @@ export const auth = betterAuth({
     }),
     advanced: {
     database: {
-      generateId: false,  
+  generateId: false,  
       experimental: { joins: true },
       databaseHooks: {
           user: {
